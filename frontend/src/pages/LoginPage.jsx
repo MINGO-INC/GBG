@@ -68,9 +68,11 @@ export default function LoginPage() {
               </button>
             </form>
 
-            <p className="login-hint">
-              Default credentials — <span>admin</span> / <span>gbg2024</span>
-            </p>
+            {import.meta.env.DEV && (
+              <p className="login-hint">
+                Default credentials — <span>admin</span> / <span>gbg2024</span>
+              </p>
+            )}
           </div>
         </div>
       </div>
