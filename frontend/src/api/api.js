@@ -22,6 +22,19 @@ export async function loginRequest(username, password) {
   return res.json()
 }
 
+export async function registerRequest(username, password) {
+  const res = await fetch(`${BASE}/auth/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password }),
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(err.error || 'Registration failed')
+  }
+  return res.json()
+}
+
 // ── Members ───────────────────────────────────────────────────────────────────
 
 export async function fetchMembers(token) {

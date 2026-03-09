@@ -1,5 +1,6 @@
 package com.gbg.service;
 
+import com.gbg.model.User;
 import com.gbg.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AuthService {
 
     private static final long TOKEN_TTL_SECONDS = 24 * 3600; // 24 hours
+    private static final String ROLE_MEMBER = "MEMBER";
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -35,6 +37,22 @@ public class AuthService {
                     tokenUserMap.put(token, u.getUsername());
                     return token;
                 });
+    }
+
+    /**
+     * Registers a new user with MEMBER role.
+     * Returns the new user's username on success, or empty if the username is already taken.
+     */
+    public Optional<String> register(String username, String password) {
+        if (userRepository.findByUsername(username).isPresent()) {
+            return Optional.empty();
+        }
+        User user = new User();
+        user.setUsername(username);
+        user.setPasswordHash(passwordEncoder.encode(password));
+        user.setRole(ROLE_MEMBER);
+        userRepository.save(user);
+        return Optional.of(username);
     }
 
     public boolean validateToken(String token) {
