@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import TabletLayout from '../components/TabletLayout'
+import AppLayout from '../components/AppLayout'
 import { useAuth } from '../context/AuthContext'
 import { fetchMembers } from '../api/api'
 
@@ -26,29 +26,34 @@ export default function MembersPage() {
   }, [token])
 
   return (
-    <TabletLayout title="Members" backTo="/dashboard">
-      <div className="section-header">
-        <h2 className="section-title">GANG ROSTER</h2>
-        <span className="section-badge">{members.length} ACTIVE</span>
-      </div>
-
-      {loading && <p className="tablet-loading">Loading…</p>}
-      {error && <p className="tablet-error">{error}</p>}
-
-      {!loading && !error && (
-        <div className="members-list">
-          {members.map((m) => (
-            <div key={m.id} className="member-card">
-              <span className="member-badge">{RANK_BADGE[m.rank] ?? '•'}</span>
-              <div className="member-info">
-                <span className="member-name">{m.inGameName}</span>
-                <span className="member-discord">{m.discordName}</span>
-              </div>
-              <span className="member-rank">{m.rank}</span>
-            </div>
-          ))}
+    <AppLayout pageId="members">
+      <div className="ops-page">
+        <div className="ops-header">
+          <div>
+            <h1 className="ops-title">Members</h1>
+            <p className="ops-subtitle">Gang roster &amp; rankings</p>
+          </div>
+          <span className="ops-count-badge">{members.length} ACTIVE</span>
         </div>
-      )}
-    </TabletLayout>
+
+        {loading && <p className="app-loading">Loading…</p>}
+        {error && <p className="app-error">{error}</p>}
+
+        {!loading && !error && (
+          <div className="members-list">
+            {members.map((m) => (
+              <div key={m.id} className="member-card">
+                <span className="member-badge">{RANK_BADGE[m.rank] ?? '•'}</span>
+                <div className="member-info">
+                  <span className="member-name">{m.inGameName}</span>
+                  <span className="member-discord">{m.discordName}</span>
+                </div>
+                <span className="member-rank">{m.rank}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </AppLayout>
   )
 }

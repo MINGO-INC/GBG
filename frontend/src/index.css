@@ -1653,3 +1653,793 @@ footer {
     font-size: 2.2rem;
   }
 }
+
+/* =================================================================
+   APP LAYOUT — Sidebar + Topbar UI
+   ================================================================= */
+
+:root {
+  --orange: #f97316;
+  --orange-dim: rgba(249, 115, 22, 0.15);
+  --orange-border: rgba(249, 115, 22, 0.35);
+  --app-bg: #111113;
+  --sidebar-bg: #0c0c0e;
+  --card-bg: #1a1a1e;
+  --card-border: rgba(255, 255, 255, 0.07);
+  --topbar-bg: #0f0f11;
+  --topbar-border: rgba(255, 255, 255, 0.07);
+}
+
+/* Outer wrapper — fills the viewport */
+.app-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: var(--app-bg);
+}
+
+/* App shell — max-width container */
+.app-shell {
+  width: 100%;
+  max-width: 1280px;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-bg);
+  border-left: 1px solid var(--topbar-border);
+  border-right: 1px solid var(--topbar-border);
+}
+
+/* ── Top bar ── */
+.app-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  height: 48px;
+  background: var(--topbar-bg);
+  border-bottom: 1px solid var(--topbar-border);
+  flex-shrink: 0;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  border-radius: 20px;
+  padding: 0.2rem 0.75rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: #22c55e;
+  text-transform: uppercase;
+}
+
+.admin-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+  flex-shrink: 0;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.topbar-user {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.topbar-balance {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  color: var(--orange);
+}
+
+.topbar-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 0.28rem 0.85rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.topbar-logout-btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.topbar-logout-icon {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+}
+
+/* ── App body (sidebar + main) ── */
+.app-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── Sidebar ── */
+.app-sidebar {
+  width: 60px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--topbar-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem 0;
+  flex-shrink: 0;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.35);
+  transition: background 0.2s, color 0.2s;
+}
+
+.sidebar-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.sidebar-btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.sidebar-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.sidebar-btn--active {
+  background: rgba(34, 197, 94, 0.12);
+  color: #22c55e;
+}
+
+.sidebar-btn--active:hover {
+  background: rgba(34, 197, 94, 0.18);
+  color: #22c55e;
+}
+
+/* ── Main content ── */
+.app-main {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--app-bg);
+  padding: 2rem 2.5rem;
+}
+
+/* =================================================================
+   PAGE: OPS (shared header/tabs used by Jobs, Members, Bank)
+   ================================================================= */
+
+.ops-page {
+  max-width: 960px;
+}
+
+.ops-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.ops-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem;
+  letter-spacing: 3px;
+  color: var(--white);
+  line-height: 1.1;
+}
+
+.ops-subtitle {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin-top: 0.2rem;
+  letter-spacing: 0.5px;
+}
+
+.ops-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--orange);
+  color: #fff;
+  border: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  padding: 0.55rem 1.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  flex-shrink: 0;
+}
+
+.ops-add-btn:hover {
+  background: #ea6a0a;
+  transform: translateY(-1px);
+}
+
+.ops-add-plus {
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.ops-count-badge {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  margin-top: 0.35rem;
+}
+
+/* ── Tabs ── */
+.ops-tabs {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1.75rem;
+}
+
+.ops-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 0.88rem;
+  letter-spacing: 1px;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.ops-tab:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.ops-tab--active {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #fff;
+}
+
+.ops-tab--active:hover {
+  background: #ea6a0a;
+  border-color: #ea6a0a;
+  color: #fff;
+}
+
+.ops-tab-icon {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Ops form ── */
+.ops-form {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ops-submit-btn {
+  background: var(--orange);
+  color: #fff;
+  border: none;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 3px;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.ops-submit-btn:hover:not(:disabled) {
+  background: #ea6a0a;
+  transform: translateY(-1px);
+}
+
+.ops-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =================================================================
+   HEIST CARD GRID
+   ================================================================= */
+
+.heist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+}
+
+.heist-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.heist-card:hover {
+  background: #202026;
+  border-color: rgba(255, 255, 255, 0.11);
+}
+
+/* Orange shield icon */
+.heist-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--orange-dim);
+  border: 1px solid var(--orange-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--orange);
+}
+
+.heist-card-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.heist-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.heist-card-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 1.5px;
+  color: var(--white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.heist-card-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+  flex-wrap: wrap;
+}
+
+.heist-card-type {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+}
+
+/* Outcome mini-badge on heist card */
+.heist-outcome-dot {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+}
+
+.heist-outcome-dot.outcome-success {
+  background: rgba(0, 200, 80, 0.12);
+  border: 1px solid rgba(0, 200, 80, 0.3);
+  color: #00c850;
+}
+
+.heist-outcome-dot.outcome-partial {
+  background: rgba(255, 180, 0, 0.12);
+  border: 1px solid rgba(255, 180, 0, 0.3);
+  color: #ffb400;
+}
+
+.heist-outcome-dot.outcome-failed {
+  background: rgba(255, 60, 60, 0.12);
+  border: 1px solid rgba(255, 60, 60, 0.3);
+  color: #ff3c3c;
+}
+
+/* Action buttons */
+.heist-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.heist-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.heist-action-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.heist-action-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.heist-action-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.heist-info-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.5px;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.heist-info-btn:hover {
+  background: rgba(255, 255, 255, 0.13);
+  color: var(--white);
+}
+
+.heist-info-icon {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+}
+
+/* =================================================================
+   HEIST INFO MODAL
+   ================================================================= */
+
+.heist-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 1rem;
+}
+
+.heist-modal {
+  width: 100%;
+  max-width: 460px;
+  background: #1c1c22;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+}
+
+.heist-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.heist-modal-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  background: var(--orange-dim);
+  border: 1px solid var(--orange-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--orange);
+  flex-shrink: 0;
+}
+
+.heist-modal-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.heist-modal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.35rem;
+  letter-spacing: 2px;
+  color: var(--white);
+}
+
+.heist-modal-close {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.heist-modal-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--white);
+}
+
+.heist-modal-close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.heist-modal-body {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.heist-modal-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.heist-modal-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.heist-modal-value {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: right;
+}
+
+.heist-modal-caught {
+  color: #ff3c3c;
+}
+
+.heist-modal-notes {
+  margin-top: 0.25rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-style: italic;
+}
+
+/* =================================================================
+   DASHBOARD PAGE
+   ================================================================= */
+
+.dash-page {
+  max-width: 960px;
+}
+
+.dash-welcome {
+  margin-bottom: 2rem;
+}
+
+.dash-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.dash-nav-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  text-align: left;
+}
+
+.dash-nav-card:hover {
+  background: #202026;
+  border-color: rgba(249, 115, 22, 0.25);
+  transform: translateY(-2px);
+}
+
+.dash-nav-card-icon {
+  font-size: 2rem;
+  margin-bottom: 0.35rem;
+}
+
+.dash-nav-card-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.15rem;
+  letter-spacing: 2px;
+  color: var(--white);
+}
+
+.dash-nav-card-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+}
+
+/* =================================================================
+   APP UTILITIES
+   ================================================================= */
+
+.app-loading,
+.app-empty {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.35);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.88rem;
+  padding: 3rem 0;
+  letter-spacing: 1px;
+}
+
+.app-error {
+  color: #ff4444;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(255, 68, 68, 0.25);
+  background: rgba(255, 68, 68, 0.06);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* Override member-check accent-color for orange theme */
+.member-check-item input[type='checkbox'] {
+  accent-color: var(--orange);
+}
+
+/* =================================================================
+   RESPONSIVE — App layout on small screens
+   ================================================================= */
+
+@media (max-width: 768px) {
+  .app-main {
+    padding: 1.25rem 1rem;
+  }
+
+  .heist-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dash-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .ops-title {
+    font-size: 1.75rem;
+  }
+
+  .app-shell {
+    border-left: none;
+    border-right: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-sidebar {
+    width: 50px;
+  }
+
+  .topbar-balance {
+    display: none;
+  }
+}
