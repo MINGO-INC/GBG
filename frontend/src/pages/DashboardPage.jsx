@@ -1,51 +1,64 @@
 import { useNavigate } from 'react-router-dom'
-import TabletLayout from '../components/TabletLayout'
+import { useAuth } from '../context/AuthContext'
 
-const TILES = [
+const APPS = [
   {
     id: 'members',
     label: 'Members',
     icon: '👥',
-    desc: 'View roster & ranks',
     path: '/members',
-    color: '#ffffff',
   },
   {
     id: 'bank',
     label: 'Gang Bank',
     icon: '💰',
-    desc: 'Balance & transactions',
     path: '/bank',
-    color: '#ffffff',
   },
   {
     id: 'jobs',
     label: 'Job Logger',
     icon: '📋',
-    desc: 'Log & review operations',
     path: '/jobs',
-    color: '#ffffff',
   },
 ]
 
 export default function DashboardPage() {
   const navigate = useNavigate()
+  const { username, logout } = useAuth()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
+  }
 
   return (
-    <TabletLayout title="Dashboard">
-      <div className="dashboard-grid">
-        {TILES.map((tile) => (
-          <button
-            key={tile.id}
-            className="dashboard-tile"
-            onClick={() => navigate(tile.path)}
-          >
-            <span className="tile-icon">{tile.icon}</span>
-            <span className="tile-label">{tile.label}</span>
-            <span className="tile-desc">{tile.desc}</span>
-          </button>
-        ))}
+    <div className="tablet-frame">
+      <div className="tablet-screen home-screen">
+        {/* Status bar */}
+        <div className="home-status-bar">
+          <span className="home-brand">GBG</span>
+          <div className="home-status-right">
+            <span className="home-user">👤 {username}</span>
+            <button className="home-logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
+        </div>
+
+        {/* App icon grid */}
+        <div className="home-app-grid">
+          {APPS.map((app) => (
+            <button
+              key={app.id}
+              className="app-icon-btn"
+              onClick={() => navigate(app.path)}
+            >
+              <span className="app-icon-img">{app.icon}</span>
+              <span className="app-icon-label">{app.label}</span>
+            </button>
+          ))}
+        </div>
       </div>
-    </TabletLayout>
+    </div>
   )
 }
