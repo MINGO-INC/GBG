@@ -67,6 +67,10 @@ export default function LoginPage() {
                 {loading ? 'AUTHENTICATING…' : 'LOGIN'}
               </button>
             </form>
+
+            <p className="login-hint">
+              Default credentials — <span>admin</span> / <span>gbg2024</span>
+            </p>
           </div>
         </div>
       </div>
