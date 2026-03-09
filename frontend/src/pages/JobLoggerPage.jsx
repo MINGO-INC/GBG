@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import TabletLayout from '../components/TabletLayout'
 import { useAuth } from '../context/AuthContext'
-import { fetchJobs, logJob } from '../api/api'
+import { fetchJobs, logJob, fetchMembers } from '../api/api'
 
 const JOB_TYPES = [
   'Fleeca Bank Heist',
@@ -22,9 +22,11 @@ const OUTCOME_LABELS = {
 
 const INITIAL_FORM = {
   jobType: '',
-  participantCount: '',
+  participants: [],
   outcome: 'FULL_SUCCESS',
-  caughtCount: '0',
+  caughtMembers: [],
+  dirtyCash: '',
+  cleanCash: '',
   notes: '',
   loggedBy: '',
 }
@@ -32,6 +34,7 @@ const INITIAL_FORM = {
 export default function JobLoggerPage() {
   const { token, username } = useAuth()
   const [jobs, setJobs] = useState([])
+  const [members, setMembers] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [form, setForm] = useState({ ...INITIAL_FORM, loggedBy: username || '' })
@@ -40,8 +43,11 @@ export default function JobLoggerPage() {
   const [showForm, setShowForm] = useState(false)
 
   useEffect(() => {
-    fetchJobs(token)
-      .then(setJobs)
+    Promise.all([fetchJobs(token), fetchMembers(token)])
+      .then(([jobList, memberList]) => {
+        setJobs(jobList)
+        setMembers(memberList)
+      })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
   }, [token])
@@ -50,19 +56,47 @@ export default function JobLoggerPage() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
+  const toggleParticipant = (name) => {
+    setForm((prev) => {
+      const already = prev.participants.includes(name)
+      const participants = already
+        ? prev.participants.filter((n) => n !== name)
+        : [...prev.participants, name]
+      // if a deselected participant was caught, remove them from caught list too
+      const caughtMembers = prev.caughtMembers.filter((n) => participants.includes(n))
+      return { ...prev, participants, caughtMembers }
+    })
+  }
+
+  const toggleCaught = (name) => {
+    setForm((prev) => {
+      const already = prev.caughtMembers.includes(name)
+      const caughtMembers = already
+        ? prev.caughtMembers.filter((n) => n !== name)
+        : [...prev.caughtMembers, name]
+      return { ...prev, caughtMembers }
+    })
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitError('')
+    if (form.participants.length === 0) {
+      setSubmitError('Select at least one crew member')
+      return
+    }
     setSubmitting(true)
     try {
-      const participantCount = parseInt(form.participantCount, 10)
-      const caughtCount = parseInt(form.caughtCount, 10) || 0
-      if (isNaN(participantCount) || participantCount < 1) {
-        setSubmitError('Participant count must be at least 1')
-        setSubmitting(false)
-        return
+      const parseCash = (val) => {
+        if (val === '') return null
+        const n = parseInt(val, 10)
+        return isNaN(n) ? null : n
       }
-      const payload = { ...form, participantCount, caughtCount }
+      const payload = {
+        ...form,
+        dirtyCash: parseCash(form.dirtyCash),
+        cleanCash: parseCash(form.cleanCash),
+      }
       const saved = await logJob(payload, token)
       setJobs([saved, ...jobs])
       setForm({ ...INITIAL_FORM, loggedBy: username || '' })
@@ -83,6 +117,8 @@ export default function JobLoggerPage() {
       minute: '2-digit',
     })
 
+  const formatCash = (amount) => (amount != null ? `$${amount.toLocaleString()}` : null)
+
   return (
     <TabletLayout title="Job Logger" backTo="/dashboard">
       <div className="section-header">
@@ -94,6 +130,7 @@ export default function JobLoggerPage() {
 
       {showForm && (
         <form className="job-form" onSubmit={handleSubmit}>
+          {/* Row 1: Job Type + Outcome */}
           <div className="form-row">
             <div className="form-field">
               <label>JOB TYPE</label>
@@ -107,22 +144,6 @@ export default function JobLoggerPage() {
               </select>
             </div>
             <div className="form-field">
-              <label>PARTICIPANTS</label>
-              <input
-                type="number"
-                name="participantCount"
-                min="1"
-                max="30"
-                value={form.participantCount}
-                onChange={handleChange}
-                placeholder="How many?"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-field">
               <label>OUTCOME</label>
               <select name="outcome" value={form.outcome} onChange={handleChange} required>
                 <option value="FULL_SUCCESS">✅ All got out — Full Success</option>
@@ -130,19 +151,70 @@ export default function JobLoggerPage() {
                 <option value="FAILED">❌ Failed</option>
               </select>
             </div>
+          </div>
+
+          {/* Row 2: Cash earned */}
+          <div className="form-row">
             <div className="form-field">
-              <label>CAUGHT COUNT</label>
+              <label>DIRTY CASH ($)</label>
               <input
                 type="number"
-                name="caughtCount"
+                name="dirtyCash"
                 min="0"
-                max="30"
-                value={form.caughtCount}
+                value={form.dirtyCash}
+                onChange={handleChange}
+                placeholder="0"
+              />
+            </div>
+            <div className="form-field">
+              <label>CLEAN CASH ($)</label>
+              <input
+                type="number"
+                name="cleanCash"
+                min="0"
+                value={form.cleanCash}
                 onChange={handleChange}
                 placeholder="0"
               />
             </div>
           </div>
+
+          {/* Crew selection */}
+          <div className="form-field form-field--full">
+            <label>CREW — {form.participants.length} selected</label>
+            <div className="member-checklist">
+              {members.map((m) => (
+                <label key={m.id} className="member-check-item">
+                  <input
+                    type="checkbox"
+                    checked={form.participants.includes(m.inGameName)}
+                    onChange={() => toggleParticipant(m.inGameName)}
+                  />
+                  <span>{m.inGameName}</span>
+                  <span className="member-check-rank">{m.rank}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Who got caught — only shown when outcome is not Full Success and crew is selected */}
+          {form.outcome !== 'FULL_SUCCESS' && form.participants.length > 0 && (
+            <div className="form-field form-field--full">
+              <label>WHO GOT CAUGHT? — {form.caughtMembers.length} selected</label>
+              <div className="member-checklist">
+                {form.participants.map((name) => (
+                  <label key={name} className="member-check-item">
+                    <input
+                      type="checkbox"
+                      checked={form.caughtMembers.includes(name)}
+                      onChange={() => toggleCaught(name)}
+                    />
+                    <span>{name}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="form-row">
             <div className="form-field">
@@ -194,8 +266,22 @@ export default function JobLoggerPage() {
                   <span className={`job-outcome ${oc.cls}`}>{oc.label}</span>
                 </div>
                 <div className="job-card-meta">
-                  <span>👥 {job.participantCount} participants</span>
-                  {job.caughtCount > 0 && <span>🚨 {job.caughtCount} caught</span>}
+                  {job.participants && job.participants.length > 0 ? (
+                    <span>👥 {job.participants.join(', ')}</span>
+                  ) : (
+                    <span>👥 {job.participantCount} participants</span>
+                  )}
+                  {job.caughtMembers && job.caughtMembers.length > 0 ? (
+                    <span>🚨 Caught: {job.caughtMembers.join(', ')}</span>
+                  ) : job.caughtCount > 0 ? (
+                    <span>🚨 {job.caughtCount} caught</span>
+                  ) : null}
+                  {formatCash(job.dirtyCash) && (
+                    <span>💰 Dirty: {formatCash(job.dirtyCash)}</span>
+                  )}
+                  {formatCash(job.cleanCash) && (
+                    <span>🏦 Clean: {formatCash(job.cleanCash)}</span>
+                  )}
                   {job.loggedBy && <span>📝 {job.loggedBy}</span>}
                   <span className="job-date">{formatDate(job.loggedAt)}</span>
                 </div>

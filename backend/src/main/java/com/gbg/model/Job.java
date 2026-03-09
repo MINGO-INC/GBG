@@ -1,13 +1,14 @@
 package com.gbg.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "jobs")
@@ -22,16 +23,29 @@ public class Job {
     @NotBlank(message = "Job type is required")
     private String jobType;
 
-    @NotNull(message = "Participant count is required")
-    @Min(value = 1, message = "At least 1 participant required")
+    /** Derived automatically from the participants list by JobService. */
     private Integer participantCount;
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Outcome is required")
     private Outcome outcome;
 
-    @Min(value = 0, message = "Caught count cannot be negative")
+    /** Derived automatically from the caughtMembers list by JobService. */
     private Integer caughtCount = 0;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "job_participants", joinColumns = @JoinColumn(name = "job_id"))
+    @Column(name = "member_name")
+    private List<String> participants = new ArrayList<>();
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "job_caught_members", joinColumns = @JoinColumn(name = "job_id"))
+    @Column(name = "member_name")
+    private List<String> caughtMembers = new ArrayList<>();
+
+    private Long dirtyCash;
+
+    private Long cleanCash;
 
     private String notes;
 
