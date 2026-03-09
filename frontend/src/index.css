@@ -2443,3 +2443,275 @@ footer {
     display: none;
   }
 }
+
+/* =================================================================
+   HOME SCREEN — Tablet UI (post-login dashboard)
+   ================================================================= */
+
+.home-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Tablet device frame */
+.tablet-device {
+  position: relative;
+  z-index: 10;
+  width: 460px;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(160deg, #18181c 0%, #0c0c0e 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 40px 100px rgba(0, 0, 0, 0.85),
+    0 0 80px rgba(249, 115, 22, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Status bar */
+.tablet-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 1.4rem;
+  background: rgba(0, 0, 0, 0.55);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tablet-time {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.tablet-brand {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+}
+
+.tablet-signal {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.tablet-signal-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 4px #22c55e;
+}
+
+/* Tablet header row */
+.tablet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.4rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tablet-welcome {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+}
+
+.tablet-admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  border-radius: 20px;
+  padding: 0.15rem 0.65rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 2px;
+  color: #22c55e;
+  text-transform: uppercase;
+  width: fit-content;
+  margin-bottom: 0.2rem;
+}
+
+.tablet-admin-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 5px #22c55e;
+  flex-shrink: 0;
+}
+
+.tablet-user {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 5px;
+  color: var(--white);
+  line-height: 1.1;
+}
+
+.tablet-tagline {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  color: var(--orange);
+  text-transform: uppercase;
+}
+
+.tablet-logout-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.45);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  padding: 0.35rem 0.85rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  text-transform: uppercase;
+}
+
+.tablet-logout-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+/* App icon grid */
+.tablet-apps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  padding: 1.5rem 1.25rem 1rem;
+  flex: 1;
+}
+
+.tablet-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.85rem 0.5rem;
+  border-radius: 18px;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.tablet-app:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.05);
+  transform: scale(1.05);
+}
+
+.tablet-app:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.tablet-app--locked {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.tablet-app-icon {
+  width: 68px;
+  height: 68px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.tablet-app:hover:not(:disabled) .tablet-app-icon {
+  border-color: var(--app-color, rgba(255, 255, 255, 0.2));
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.5),
+    0 0 14px color-mix(in srgb, var(--app-color, transparent) 40%, transparent);
+}
+
+.tablet-app-emoji {
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+.tablet-app-lock {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  font-size: 0.72rem;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 50%;
+  padding: 2px 3px;
+  line-height: 1;
+}
+
+.tablet-app-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 2px;
+  color: var(--white);
+  text-align: center;
+  line-height: 1.1;
+}
+
+.tablet-app-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.56rem;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.32);
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: -0.3rem;
+}
+
+/* Dock at bottom */
+.tablet-dock {
+  padding: 0.85rem 1rem 1.1rem;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tablet-home-indicator {
+  width: 96px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 2px;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .tablet-device {
+    width: 95vw;
+    border-radius: 24px;
+  }
+
+  .tablet-app-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+  }
+
+  .tablet-app-emoji {
+    font-size: 1.6rem;
+  }
+}
