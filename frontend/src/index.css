@@ -10,6 +10,8 @@
   --gray-dark: #111111;
   --gray-mid: #222222;
   --gray-light: #444444;
+  /* Replace the URL below with your gang photo once uploaded */
+  --home-bg-image: url('/images/gang-bg.svg');
 }
 
 * {
@@ -1021,51 +1023,145 @@ footer {
 }
 
 /* ──────────────────────────────────────────────
-   DASHBOARD
+   TABLET HOME SCREEN (Dashboard)
    ────────────────────────────────────────────── */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
-  padding: 2rem 0;
+
+/* The tablet screen in home-screen mode has a background image */
+.home-screen {
+  position: relative;
+  background-image: var(--home-bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* Dark overlay so text and icons stay legible over any photo */
+  background-color: #0d0d0d;
 }
 
-.dashboard-tile {
+.home-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+/* Status bar at the top of the home screen */
+.home-status-bar {
+  position: relative;
+  z-index: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 14px;
-  padding: 2.5rem 1rem;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  justify-content: space-between;
+  padding: 0.8rem 1.5rem;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.home-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 4px;
   color: var(--white);
 }
 
-.dashboard-tile:hover {
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-3px);
+.home-status-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.tile-icon {
-  font-size: 2.5rem;
-  line-height: 1;
-}
-
-.tile-label {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.4rem;
-  letter-spacing: 3px;
-}
-
-.tile-desc {
+.home-user {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.65);
   letter-spacing: 1px;
+}
+
+.home-logout-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 0.3rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.home-logout-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--white);
+}
+
+/* App icon grid — centred on the screen */
+.home-app-grid {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 2.5rem;
+  padding: 3rem 2rem;
+}
+
+/* Individual app icon button */
+.app-icon-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s;
+  width: 90px;
+}
+
+.app-icon-btn:hover {
+  transform: scale(1.08);
+}
+
+.app-icon-btn:active {
+  transform: scale(0.95);
+}
+
+.app-icon-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 2.2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.05);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.app-icon-btn:hover .app-icon-img {
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.app-icon-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--white);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
   text-align: center;
 }
 
@@ -1399,8 +1495,20 @@ footer {
 
 /* ── Responsive: tablet UI on small screens ── */
 @media (max-width: 640px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
+  .home-app-grid {
+    gap: 1.5rem;
+    padding: 2rem 1rem;
+  }
+
+  .app-icon-btn {
+    width: 72px;
+  }
+
+  .app-icon-img {
+    width: 58px;
+    height: 58px;
+    font-size: 1.8rem;
+    border-radius: 14px;
   }
 
   .form-row {
