@@ -1023,6 +1023,20 @@ footer {
   text-align: center;
 }
 
+.login-hint {
+  margin-top: 1.5rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.35);
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.login-hint span {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: bold;
+}
+
 .login-btn {
   background: var(--white);
   color: var(--black);
