@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 
 const LINKS = ['about', 'rules', 'ranks', 'join']
 
@@ -64,6 +65,11 @@ export default function Navbar() {
             </a>
           </li>
         ))}
+        <li>
+          <Link to="/login" className="nav-login-btn">
+            Login
+          </Link>
+        </li>
       </ul>
     </nav>
   )

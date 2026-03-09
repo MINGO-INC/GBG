@@ -135,6 +135,31 @@ nav {
 .nav-links a:hover::after,
 .nav-links a.active::after { width: 100%; }
 
+.nav-login-btn {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--black) !important;
+  background: var(--white);
+  padding: 0.35rem 1rem;
+  border-radius: 3px;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.nav-login-btn::after {
+  display: none !important;
+}
+
+.nav-login-btn:hover {
+  background: var(--off-white);
+  color: var(--black) !important;
+  transform: translateY(-1px);
+}
+
 /* ==================== HERO ==================== */
 #hero {
   position: relative;
