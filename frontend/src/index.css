@@ -1363,6 +1363,56 @@ footer {
 }
 
 /* ──────────────────────────────────────────────
+   MEMBER CHECKLIST (Job Logger crew/caught picker)
+   ────────────────────────────────────────────── */
+.member-checklist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 7px;
+  padding: 0.65rem 0.85rem;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.member-check-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  padding: 0.25rem 0.6rem;
+  border-radius: 5px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.member-check-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.member-check-item input[type='checkbox'] {
+  accent-color: var(--white);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.member-check-rank {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ──────────────────────────────────────────────
    JOB LOGGER
    ────────────────────────────────────────────── */
 .jobs-list {

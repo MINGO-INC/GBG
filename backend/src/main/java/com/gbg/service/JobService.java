@@ -18,6 +18,10 @@ public class JobService {
     }
 
     public Job logJob(Job job) {
+        job.setParticipantCount(
+                job.getParticipants() != null ? job.getParticipants().size() : 0);
+        job.setCaughtCount(
+                job.getCaughtMembers() != null ? job.getCaughtMembers().size() : 0);
         return jobRepository.save(job);
     }
 }
