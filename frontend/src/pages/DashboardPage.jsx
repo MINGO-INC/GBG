@@ -1,64 +1,35 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-
-const APPS = [
-  {
-    id: 'members',
-    label: 'Members',
-    icon: '👥',
-    path: '/members',
-  },
-  {
-    id: 'bank',
-    label: 'Gang Bank',
-    icon: '💰',
-    path: '/bank',
-  },
-  {
-    id: 'jobs',
-    label: 'Job Logger',
-    icon: '📋',
-    path: '/jobs',
-  },
-]
+import AppLayout from '../components/AppLayout'
 
 export default function DashboardPage() {
   const navigate = useNavigate()
-  const { username, logout } = useAuth()
-
-  const handleLogout = () => {
-    logout()
-    navigate('/login')
-  }
 
   return (
-    <div className="tablet-frame">
-      <div className="tablet-screen home-screen">
-        {/* Status bar */}
-        <div className="home-status-bar">
-          <span className="home-brand">GBG</span>
-          <div className="home-status-right">
-            <span className="home-user">👤 {username}</span>
-            <button className="home-logout-btn" onClick={handleLogout}>
-              Logout
-            </button>
-          </div>
+    <AppLayout pageId="dashboard">
+      <div className="dash-page">
+        <div className="dash-welcome">
+          <h1 className="ops-title">Dashboard</h1>
+          <p className="ops-subtitle">Welcome back, Commander</p>
         </div>
-
-        {/* App icon grid */}
-        <div className="home-app-grid">
-          {APPS.map((app) => (
-            <button
-              key={app.id}
-              className="app-icon-btn"
-              onClick={() => navigate(app.path)}
-            >
-              <span className="app-icon-img">{app.icon}</span>
-              <span className="app-icon-label">{app.label}</span>
-            </button>
-          ))}
+        <div className="dash-cards">
+          <button className="dash-nav-card" onClick={() => navigate('/members')}>
+            <span className="dash-nav-card-icon">👥</span>
+            <span className="dash-nav-card-label">Members</span>
+            <span className="dash-nav-card-sub">Gang Roster</span>
+          </button>
+          <button className="dash-nav-card" onClick={() => navigate('/bank')}>
+            <span className="dash-nav-card-icon">💰</span>
+            <span className="dash-nav-card-label">Gang Bank</span>
+            <span className="dash-nav-card-sub">Funds &amp; Transactions</span>
+          </button>
+          <button className="dash-nav-card" onClick={() => navigate('/jobs')}>
+            <span className="dash-nav-card-icon">🛡️</span>
+            <span className="dash-nav-card-label">Black Ops</span>
+            <span className="dash-nav-card-sub">Operations Log</span>
+          </button>
         </div>
       </div>
-    </div>
+    </AppLayout>
   )
 }

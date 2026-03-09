@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import TabletLayout from '../components/TabletLayout'
+import AppLayout from '../components/AppLayout'
 import { useAuth } from '../context/AuthContext'
 import { fetchBalance, fetchTransactions, addTransaction } from '../api/api'
 
@@ -74,108 +74,97 @@ export default function GangBankPage() {
     })
 
   return (
-    <TabletLayout title="Gang Bank" backTo="/dashboard">
-      {loading && <p className="tablet-loading">Loading…</p>}
-      {error && <p className="tablet-error">{error}</p>}
-
-      {!loading && !error && (
-        <>
-          <div className="bank-balance-card">
-            <span className="balance-label">GANG BALANCE</span>
-            <span className={`balance-amount ${balance < 0 ? 'balance-negative' : ''}`}>
-              {fmt(balance ?? 0)}
-            </span>
+    <AppLayout pageId="bank">
+      <div className="ops-page">
+        <div className="ops-header">
+          <div>
+            <h1 className="ops-title">Gang Bank</h1>
+            <p className="ops-subtitle">Funds management &amp; transaction history</p>
           </div>
-
-          <div className="section-header">
-            <h2 className="section-title">TRANSACTIONS</h2>
-            <button className="tablet-action-btn" onClick={() => setShowForm((s) => !s)}>
-              {showForm ? '✕ Cancel' : '＋ Add'}
+          {!loading && !error && (
+            <button className="ops-add-btn" onClick={() => setShowForm((s) => !s)}>
+              <span className="ops-add-plus">+</span>
+              {showForm ? 'Cancel' : 'Add transaction'}
             </button>
-          </div>
-
-          {showForm && (
-            <form className="job-form" onSubmit={handleSubmit}>
-              <div className="form-row">
-                <div className="form-field">
-                  <label>TYPE</label>
-                  <select name="type" value={form.type} onChange={handleChange} required>
-                    <option value="DEPOSIT">💵 Deposit</option>
-                    <option value="WITHDRAWAL">💸 Withdrawal</option>
-                  </select>
-                </div>
-                <div className="form-field">
-                  <label>AMOUNT ($)</label>
-                  <input
-                    type="number"
-                    name="amount"
-                    min="0.01"
-                    step="0.01"
-                    value={form.amount}
-                    onChange={handleChange}
-                    placeholder="0.00"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="form-row">
-                <div className="form-field">
-                  <label>DESCRIPTION</label>
-                  <input
-                    type="text"
-                    name="description"
-                    value={form.description}
-                    onChange={handleChange}
-                    placeholder="What is this for?"
-                    required
-                  />
-                </div>
-                <div className="form-field">
-                  <label>PERFORMED BY</label>
-                  <input
-                    type="text"
-                    name="performedBy"
-                    value={form.performedBy}
-                    onChange={handleChange}
-                    placeholder="Your in-game name"
-                  />
-                </div>
-              </div>
-
-              {submitError && <p className="tablet-error">{submitError}</p>}
-
-              <button className="login-btn" type="submit" disabled={submitting}>
-                {submitting ? 'SAVING…' : 'ADD TRANSACTION'}
-              </button>
-            </form>
           )}
+        </div>
 
-          {transactions.length === 0 && (
-            <p className="tablet-empty">No transactions yet.</p>
-          )}
+        {loading && <p className="app-loading">Loading…</p>}
+        {error && <p className="app-error">{error}</p>}
 
-          <div className="transactions-list">
-            {transactions.map((t) => (
-              <div key={t.id} className={`txn-card ${t.type === 'DEPOSIT' ? 'txn-deposit' : 'txn-withdrawal'}`}>
-                <div className="txn-left">
-                  <span className="txn-icon">{t.type === 'DEPOSIT' ? '↑' : '↓'}</span>
-                  <div className="txn-info">
-                    <span className="txn-desc">{t.description}</span>
-                    {t.performedBy && <span className="txn-by">{t.performedBy}</span>}
+        {!loading && !error && (
+          <>
+            <div className="bank-balance-card">
+              <span className="balance-label">GANG BALANCE</span>
+              <span className={`balance-amount ${balance < 0 ? 'balance-negative' : ''}`}>
+                {fmt(balance ?? 0)}
+              </span>
+            </div>
+
+            {showForm && (
+              <form className="ops-form" onSubmit={handleSubmit}>
+                <div className="form-row">
+                  <div className="form-field">
+                    <label>TYPE</label>
+                    <select name="type" value={form.type} onChange={handleChange} required>
+                      <option value="DEPOSIT">Deposit</option>
+                      <option value="WITHDRAWAL">Withdrawal</option>
+                    </select>
+                  </div>
+                  <div className="form-field">
+                    <label>AMOUNT ($)</label>
+                    <input type="number" name="amount" min="0.01" step="0.01" value={form.amount} onChange={handleChange} placeholder="0.00" required />
                   </div>
                 </div>
-                <div className="txn-right">
-                  <span className={`txn-amount ${t.type === 'DEPOSIT' ? 'amount-pos' : 'amount-neg'}`}>
-                    {t.type === 'DEPOSIT' ? '+' : '-'}{fmt(t.amount)}
-                  </span>
-                  <span className="txn-date">{formatDate(t.transactionDate)}</span>
+                <div className="form-row">
+                  <div className="form-field">
+                    <label>DESCRIPTION</label>
+                    <input type="text" name="description" value={form.description} onChange={handleChange} placeholder="What is this for?" required />
+                  </div>
+                  <div className="form-field">
+                    <label>PERFORMED BY</label>
+                    <input type="text" name="performedBy" value={form.performedBy} onChange={handleChange} placeholder="Your in-game name" />
+                  </div>
                 </div>
+                {submitError && <p className="app-error">{submitError}</p>}
+                <button className="ops-submit-btn" type="submit" disabled={submitting}>
+                  {submitting ? 'SAVING…' : 'ADD TRANSACTION'}
+                </button>
+              </form>
+            )}
+
+            <div className="ops-header" style={{ marginTop: '1.5rem' }}>
+              <div>
+                <h2 className="section-title">TRANSACTIONS</h2>
               </div>
-            ))}
-          </div>
-        </>
-      )}
-    </TabletLayout>
+            </div>
+
+            {transactions.length === 0 && (
+              <p className="app-empty">No transactions yet.</p>
+            )}
+
+            <div className="transactions-list">
+              {transactions.map((t) => (
+                <div key={t.id} className={`txn-card ${t.type === 'DEPOSIT' ? 'txn-deposit' : 'txn-withdrawal'}`}>
+                  <div className="txn-left">
+                    <span className="txn-icon">{t.type === 'DEPOSIT' ? '↑' : '↓'}</span>
+                    <div className="txn-info">
+                      <span className="txn-desc">{t.description}</span>
+                      {t.performedBy && <span className="txn-by">{t.performedBy}</span>}
+                    </div>
+                  </div>
+                  <div className="txn-right">
+                    <span className={`txn-amount ${t.type === 'DEPOSIT' ? 'amount-pos' : 'amount-neg'}`}>
+                      {t.type === 'DEPOSIT' ? '+' : '-'}{fmt(t.amount)}
+                    </span>
+                    <span className="txn-date">{formatDate(t.transactionDate)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </AppLayout>
   )
 }
