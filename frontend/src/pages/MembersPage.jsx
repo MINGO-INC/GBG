@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import AppLayout from '../components/AppLayout'
+import TabletLayout from '../components/TabletLayout'
 import { useAuth } from '../context/AuthContext'
 import { fetchMembers } from '../api/api'
 
@@ -26,7 +26,7 @@ export default function MembersPage() {
   }, [token])
 
   return (
-    <AppLayout pageId="members">
+    <TabletLayout title="Roster" backTo="/dashboard">
       <div className="ops-page">
         <div className="ops-header">
           <div>
@@ -54,6 +54,6 @@ export default function MembersPage() {
           </div>
         )}
       </div>
-    </AppLayout>
+    </TabletLayout>
   )
 }

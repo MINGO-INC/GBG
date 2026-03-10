@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import AppLayout from '../components/AppLayout'
+import TabletLayout from '../components/TabletLayout'
 import { useAuth } from '../context/AuthContext'
 import { fetchJobs, logJob, fetchMembers } from '../api/api'
 
@@ -167,7 +167,7 @@ export default function JobLoggerPage() {
   const formatCash = (amount) => (amount != null ? `$${amount.toLocaleString()}` : null)
 
   return (
-    <AppLayout pageId="jobs">
+    <TabletLayout title="Black Ops" backTo="/dashboard">
       <div className="ops-page">
         {/* ── Page header ── */}
         <div className="ops-header">
@@ -386,6 +386,6 @@ export default function JobLoggerPage() {
           </div>
         </div>
       )}
-    </AppLayout>
+    </TabletLayout>
   )
 }
