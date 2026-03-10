@@ -53,7 +53,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav ref={navRef}>
+    <nav ref={navRef} className="site-nav">
       <a href="#hero" className="nav-logo" onClick={(e) => scrollTo(e, 'hero')}>
         GBG
       </a>

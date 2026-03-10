@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import AppLayout from '../components/AppLayout'
+import TabletLayout from '../components/TabletLayout'
 import { useAuth } from '../context/AuthContext'
 import { fetchBalance, fetchTransactions, addTransaction } from '../api/api'
 
@@ -74,7 +74,7 @@ export default function GangBankPage() {
     })
 
   return (
-    <AppLayout pageId="bank">
+    <TabletLayout title="Gang Bank" backTo="/dashboard">
       <div className="ops-page">
         <div className="ops-header">
           <div>
@@ -165,6 +165,6 @@ export default function GangBankPage() {
           </>
         )}
       </div>
-    </AppLayout>
+    </TabletLayout>
   )
 }
