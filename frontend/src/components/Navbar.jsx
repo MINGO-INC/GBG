@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 
-const LINKS = ['about', 'rules', 'ranks', 'join']
+const LINKS = ['about', 'rules', 'ranks']
 
 export default function Navbar() {
   const navRef = useRef(null)
