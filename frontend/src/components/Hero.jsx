@@ -70,10 +70,7 @@ export default function Hero() {
           Black &amp; White. No shades of grey.
         </p>
         <div className="hero-cta">
-          <a href="#join" className="btn btn-primary" onClick={(e) => scrollTo(e, 'join')}>
-            Join the Gang
-          </a>
-          <a href="#about" className="btn btn-secondary" onClick={(e) => scrollTo(e, 'about')}>
+          <a href="#about" className="btn btn-primary" onClick={(e) => scrollTo(e, 'about')}>
             Learn More
           </a>
         </div>

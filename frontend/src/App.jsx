@@ -14,7 +14,6 @@ import Hero from './components/Hero'
 import About from './components/About'
 import Rules from './components/Rules'
 import Ranks from './components/Ranks'
-import Join from './components/Join'
 import Footer from './components/Footer'
 
 function LandingPage() {
@@ -26,7 +25,6 @@ function LandingPage() {
       <About />
       <Rules />
       <Ranks />
-      <Join />
       <Footer />
     </>
   )

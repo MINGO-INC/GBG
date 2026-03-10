@@ -1,4 +1,4 @@
-const LINKS = ['about', 'rules', 'ranks', 'join']
+const LINKS = ['about', 'rules', 'ranks']
 
 export default function Footer() {
   const scrollTo = (e, id) => {
