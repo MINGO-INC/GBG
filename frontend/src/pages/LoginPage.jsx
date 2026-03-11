@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { loginRequest, registerRequest } from '../api/api'
+
+const ACCESS_FADE_DELAY = 1900  // ms before overlay starts fading out
+const ACCESS_NAV_DELAY  = 2200  // ms before navigating to dashboard
 
 export default function LoginPage() {
   const [mode, setMode] = useState('login') // 'login' | 'register'
@@ -11,8 +14,15 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
+  const [accessAnim, setAccessAnim] = useState(false)
+  const [accessFade, setAccessFade] = useState(false)
+  const navTimers = useRef([])
   const { login } = useAuth()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    return () => navTimers.current.forEach(clearTimeout)
+  }, [])
 
   const switchMode = (next) => {
     setMode(next)
@@ -50,7 +60,9 @@ export default function LoginPage() {
     try {
       const data = await loginRequest(username, password)
       login(data.token, data.username)
-      navigate('/dashboard')
+      setAccessAnim(true)
+      navTimers.current.push(setTimeout(() => setAccessFade(true), ACCESS_FADE_DELAY))
+      navTimers.current.push(setTimeout(() => navigate('/dashboard'), ACCESS_NAV_DELAY))
     } catch (err) {
       setError(err.message || 'Login failed')
     } finally {
@@ -144,6 +156,17 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+
+      {accessAnim && (
+        <div className={`login-access-overlay${accessFade ? ' login-access-overlay--out' : ''}`}>
+          <div className="login-access-scanline" />
+          <div className="login-access-lines">
+            <span className="login-access-line login-access-line--1">■ AUTHENTICATING USER...</span>
+            <span className="login-access-line login-access-line--2">■ CREDENTIALS VERIFIED</span>
+            <span className="login-access-line login-access-line--3">■ SYSTEM ACCESS GRANTED</span>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
